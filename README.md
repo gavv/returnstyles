@@ -5,7 +5,7 @@ Go (golang) linter to check function return styles according to rules of your ch
 ## Install
 
 ```
-go install -v github.com/gavv/returnstyles/cmd@latest
+go install -v github.com/gavv/returnstyles/cmd/returnstyles@latest
 ```
 
 ## Usage

@@ -5,7 +5,7 @@ tidy:
 
 build:
 	go build .
-	go build -o returnstyles ./cmd
+	go build -o returnstyles ./cmd/returnstyles
 
 test:
 ifneq ($(shell which gotest),)
