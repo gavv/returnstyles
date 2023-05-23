@@ -31,6 +31,7 @@ const (
 	AllowNormalReturnsFlag  = "allow-normal-returns"
 	AllowNakedReturnsFlag   = "allow-naked-returns"
 	AllowMixingReturnsFlag  = "allow-mixing-returns"
+	IncludeCgoFlag          = "include-cgo"
 )
 
 type styleConfig struct {
@@ -40,6 +41,7 @@ type styleConfig struct {
 	AllowNormalReturns  bool `yaml:"allow-normal-returns"`
 	AllowNakedReturns   bool `yaml:"allow-naked-returns"`
 	AllowMixingReturns  bool `yaml:"allow-mixing-returns"`
+	IncludeCgo          bool `yaml:"include-cgo"`
 }
 
 var config = styleConfig{
@@ -49,6 +51,7 @@ var config = styleConfig{
 	AllowNormalReturns:  true,
 	AllowNakedReturns:   true,
 	AllowMixingReturns:  false,
+	IncludeCgo:          false,
 }
 
 var configPath string
@@ -100,6 +103,9 @@ func flags() flag.FlagSet {
 
 	boolVar(&config.AllowMixingReturns, AllowMixingReturnsFlag,
 		"allow mixing normal and naked in functions with named return variables")
+
+	boolVar(&config.IncludeCgo, IncludeCgoFlag,
+		"include linting cgo functions")
 
 	return fs
 }
@@ -185,8 +191,8 @@ func readConfig(result *styleConfig, path string) {
 func skip(funcNode ast.Node) bool {
 	switch funcNode := funcNode.(type) {
 	case *ast.FuncDecl:
-		if strings.HasPrefix(funcNode.Name.Name, "_Cfunc_") {
-			return true
+		if strings.HasPrefix(funcNode.Name.Name, "_Cfunc_") { // I don't think it is safe to assume Cgo functions always start with _Cfunc_
+			return !config.IncludeCgo
 		}
 	}
 

@@ -1,6 +1,7 @@
 returnstyles:
-
+  
   allow-unnamed: true
   allow-partially-named: false
   allow-normal-returns: true
   allow-naked-returns: false
+  include-cgo: false

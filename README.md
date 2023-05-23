@@ -30,6 +30,7 @@ returnstyles -allow-naked-returns=false .
 | `-allow-normal-returns`  | true    | allow normal (non-naked) returns in functions with named return variables |
 | `-allow-naked-returns`   | true    | allow naked returns in functions with named return variables              |
 | `-allow-mixing-returns`  | false   | allow mixing normal and naked in functions with named return variables    |
+| `-include-cgo`           | false   | check cgo functions                                                       |
 
 ## Config
 
@@ -49,6 +50,7 @@ returnstyles:
   allow-normal-returns: true
   allow-naked-returns: true
   allow-mixing-returns: false
+  include-cgo: false
 ```
 
 ## Package
@@ -128,6 +130,14 @@ func bar() (a int, b int) {
 }
 ```
 
+### `-include-cgo=true`
+
+```go
+func _Cfunc_namedNaked() (a int, b int) {
+	a = 11
+	b = 22
+	return // lint: naked returns not allowed
+}
 ## Authors
 
 See [here](https://github.com/gavv/returnstyles/graphs/contributors).
