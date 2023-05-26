@@ -30,6 +30,7 @@ func TestAnalyzer(t *testing.T) {
 				AllowNormalReturnsFlag:  true,
 				AllowNakedReturnsFlag:   true,
 				AllowMixingReturnsFlag:  false,
+				IncludeCgoFlag:          false,
 			},
 		},
 		{
@@ -41,6 +42,7 @@ func TestAnalyzer(t *testing.T) {
 				AllowNormalReturnsFlag:  false,
 				AllowNakedReturnsFlag:   true,
 				AllowMixingReturnsFlag:  false,
+				IncludeCgoFlag:          false,
 			},
 		},
 		{
@@ -52,6 +54,7 @@ func TestAnalyzer(t *testing.T) {
 				AllowNormalReturnsFlag:  true,
 				AllowNakedReturnsFlag:   false,
 				AllowMixingReturnsFlag:  false,
+				IncludeCgoFlag:          false,
 			},
 		},
 		{
@@ -68,6 +71,12 @@ func TestAnalyzer(t *testing.T) {
 				AllowUnnamedFlag:        false,
 				AllowNamedFlag:          true,
 				AllowPartiallyNamedFlag: true,
+			},
+		}, {
+			name: "include_cgo",
+			options: map[string]any{
+				AllowUnnamedFlag: true,
+				IncludeCgoFlag:   true,
 			},
 		},
 		{

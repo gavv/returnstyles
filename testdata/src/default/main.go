@@ -42,6 +42,12 @@ func namedMixing2() (a int, b int) {
 	}
 }
 
+func _Cfunc_namedNaked() (a int, b int) {
+	a = 11
+	b = 22
+	return
+}
+
 func outer() {
 	// empty()
 	func() {
