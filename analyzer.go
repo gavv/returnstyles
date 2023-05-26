@@ -105,7 +105,7 @@ func flags() flag.FlagSet {
 		"allow mixing normal and naked in functions with named return variables")
 
 	boolVar(&config.IncludeCgo, IncludeCgoFlag,
-		"include linting cgo functions")
+		"include diagnostics for cgo-generated functions")
 
 	return fs
 }
