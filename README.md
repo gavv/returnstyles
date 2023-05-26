@@ -30,7 +30,7 @@ returnstyles -allow-naked-returns=false .
 | `-allow-normal-returns`  | true    | allow normal (non-naked) returns in functions with named return variables |
 | `-allow-naked-returns`   | true    | allow naked returns in functions with named return variables              |
 | `-allow-mixing-returns`  | false   | allow mixing normal and naked in functions with named return variables    |
-| `-include-cgo`           | false   | check cgo functions                                                       |
+| `-include-cgo`           | false   | include diagnostics for cgo-generated functions                                                       |
 
 ## Config
 
