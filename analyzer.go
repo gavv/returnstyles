@@ -191,8 +191,8 @@ func readConfig(result *styleConfig, path string) {
 func skip(funcNode ast.Node) bool {
 	switch funcNode := funcNode.(type) {
 	case *ast.FuncDecl:
-		if strings.HasPrefix(funcNode.Name.Name, "_Cfunc_") { // I don't think it is safe to assume Cgo functions always start with _Cfunc_
-			return !config.IncludeCgo
+		if strings.HasPrefix(funcNode.Name.Name, "_Cfunc_") && !config.IncludeCgo {
+			return true
 		}
 	}
 
