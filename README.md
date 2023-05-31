@@ -30,6 +30,7 @@ returnstyles -allow-naked-returns=false .
 | `-allow-normal-returns`  | true    | allow normal (non-naked) returns in functions with named return variables |
 | `-allow-naked-returns`   | true    | allow naked returns in functions with named return variables              |
 | `-allow-mixing-returns`  | false   | allow mixing normal and naked in functions with named return variables    |
+| `-include-generated`     | false   | include generated file    |
 
 ## Config
 
@@ -49,6 +50,7 @@ returnstyles:
   allow-normal-returns: true
   allow-naked-returns: true
   allow-mixing-returns: false
+  include-generated: false
 ```
 
 ## Package

@@ -6,6 +6,7 @@ import (
 	"go/ast"
 	"io/ioutil"
 	"os"
+	"regexp"
 	"strings"
 
 	"golang.org/x/tools/go/analysis"
@@ -31,6 +32,7 @@ const (
 	AllowNormalReturnsFlag  = "allow-normal-returns"
 	AllowNakedReturnsFlag   = "allow-naked-returns"
 	AllowMixingReturnsFlag  = "allow-mixing-returns"
+	IncludeGeneratedFlag    = "include-generated"
 )
 
 type styleConfig struct {
@@ -40,6 +42,7 @@ type styleConfig struct {
 	AllowNormalReturns  bool `yaml:"allow-normal-returns"`
 	AllowNakedReturns   bool `yaml:"allow-naked-returns"`
 	AllowMixingReturns  bool `yaml:"allow-mixing-returns"`
+	IncludeGenerated    bool `yaml:"include-generated"`
 }
 
 var config = styleConfig{
@@ -49,6 +52,7 @@ var config = styleConfig{
 	AllowNormalReturns:  true,
 	AllowNakedReturns:   true,
 	AllowMixingReturns:  false,
+	IncludeGenerated:    false,
 }
 
 var configPath string
@@ -68,6 +72,8 @@ const (
 	namedReturnVariables
 	partiallyNamedReturnVariables
 )
+
+var generatedCodeRe = regexp.MustCompile(`^// Code generated .* DO NOT EDIT\.$`)
 
 func flags() flag.FlagSet {
 	var fs flag.FlagSet
@@ -101,6 +107,9 @@ func flags() flag.FlagSet {
 	boolVar(&config.AllowMixingReturns, AllowMixingReturnsFlag,
 		"allow mixing normal and naked in functions with named return variables")
 
+	boolVar(&config.IncludeGenerated, IncludeGeneratedFlag,
+		"include generated file")
+
 	return fs
 }
 
@@ -129,7 +138,7 @@ func run(pass *analysis.Pass) (interface{}, error) {
 
 			switch currNode := node.(type) {
 			case *ast.FuncDecl, *ast.FuncLit:
-				if skip(currNode) {
+				if skip(currNode, stack) {
 					return false
 				}
 
@@ -139,7 +148,7 @@ func run(pass *analysis.Pass) (interface{}, error) {
 				funcNode := findFuncNode(stack)
 				retnStyle := detectReturnStyle(funcNode, currNode)
 
-				if skip(funcNode) {
+				if skip(funcNode, stack) {
 					return false
 				}
 
@@ -182,11 +191,29 @@ func readConfig(result *styleConfig, path string) {
 	*result = config.Styles
 }
 
-func skip(funcNode ast.Node) bool {
+func skip(funcNode ast.Node, stack []ast.Node) bool {
+	if fileNode, ok := stack[0].(*ast.File); ok && isGeneratedFile(fileNode) {
+		return !config.IncludeGenerated
+	}
 	switch funcNode := funcNode.(type) {
 	case *ast.FuncDecl:
 		if strings.HasPrefix(funcNode.Name.Name, "_Cfunc_") {
 			return true
+		}
+	}
+
+	return false
+}
+
+func isGeneratedFile(file *ast.File) bool {
+	for _, c := range file.Comments {
+		if c.Pos() >= file.Package {
+			return false
+		}
+		for _, cc := range c.List {
+			if generatedCodeRe.MatchString(cc.Text) {
+				return true
+			}
 		}
 	}
 
