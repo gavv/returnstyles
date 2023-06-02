@@ -138,7 +138,7 @@ func run(pass *analysis.Pass) (interface{}, error) {
 
 			switch currNode := node.(type) {
 			case *ast.FuncDecl, *ast.FuncLit:
-				if skip(currNode, stack) {
+				if skip(currNode, stack[0]) {
 					return false
 				}
 
@@ -148,7 +148,7 @@ func run(pass *analysis.Pass) (interface{}, error) {
 				funcNode := findFuncNode(stack)
 				retnStyle := detectReturnStyle(funcNode, currNode)
 
-				if skip(funcNode, stack) {
+				if skip(funcNode, stack[0]) {
 					return false
 				}
 
@@ -191,9 +191,9 @@ func readConfig(result *styleConfig, path string) {
 	*result = config.Styles
 }
 
-func skip(funcNode ast.Node, stack []ast.Node) bool {
-	if fileNode, ok := stack[0].(*ast.File); ok && isGeneratedFile(fileNode) {
-		return !config.IncludeGenerated
+func skip(funcNode ast.Node, fileNode ast.Node) bool {
+	if isGeneratedFile(fileNode) && !config.IncludeGenerated {
+		return true
 	}
 	switch funcNode := funcNode.(type) {
 	case *ast.FuncDecl:
@@ -205,7 +205,11 @@ func skip(funcNode ast.Node, stack []ast.Node) bool {
 	return false
 }
 
-func isGeneratedFile(file *ast.File) bool {
+func isGeneratedFile(fileNode ast.Node) bool {
+	file, ok := fileNode.(*ast.File)
+	if !ok {
+		return false
+	}
 	for _, c := range file.Comments {
 		if c.Pos() >= file.Package {
 			return false

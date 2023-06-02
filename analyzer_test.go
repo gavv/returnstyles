@@ -83,10 +83,7 @@ func TestAnalyzer(t *testing.T) {
 		{
 			name: "generated_included",
 			options: map[string]any{
-				AllowUnnamedFlag:        true,
-				AllowNamedFlag:          false,
-				AllowPartiallyNamedFlag: false,
-				IncludeGeneratedFlag:    true,
+				IncludeGeneratedFlag: true,
 			},
 		},
 	}
