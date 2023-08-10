@@ -75,7 +75,9 @@ func TestAnalyzer(t *testing.T) {
 		}, {
 			name: "include_cgo",
 			options: map[string]any{
-				IncludeCgoFlag: true,
+				AllowUnnamedFlag:      true,
+				AllowNakedReturnsFlag: true,
+				IncludeCgoFlag:        true,
 			},
 		},
 		{
