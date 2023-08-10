@@ -1,5 +1,13 @@
 package main
 
+/*
+void add(){
+	int a = 11 + 22;
+	return;
+}
+*/
+import "C"
+
 func empty() {
 	return
 }
@@ -42,10 +50,8 @@ func namedMixing2() (a int, b int) {
 	}
 }
 
-func _Cfunc_namedNaked() (a int, b int) {
-	a = 11
-	b = 22
-	return
+func main() {
+	C.add()
 }
 
 func outer() {

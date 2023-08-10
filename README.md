@@ -130,14 +130,6 @@ func bar() (a int, b int) {
 }
 ```
 
-### `-include-cgo=true`
-
-```go
-func _Cfunc_namedNaked() (a int, b int) {
-	a = 11
-	b = 22
-	return // lint: naked returns not allowed
-}
 ## Authors
 
 See [here](https://github.com/gavv/returnstyles/graphs/contributors).
