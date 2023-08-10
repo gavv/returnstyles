@@ -10,7 +10,9 @@ on:
       - main
     tags:
       - v*
-
+      
+  workflow_dispatch:
+  
 jobs:
   build:
     strategy:
@@ -24,6 +26,7 @@ jobs:
 
           - os: macos-latest
             go: 1.x
+
 
     name: "${{ matrix.os }} / go ${{ matrix.go }}"
     runs-on: ${{ matrix.os }}

@@ -1,5 +1,13 @@
 package main
 
+/*
+void add(){
+	int a = 11 + 22;
+	return;
+}
+*/
+import "C"
+
 func empty() {
 	return
 }
@@ -40,6 +48,10 @@ func namedMixing2() (a int, b int) {
 	} else {
 		return 11, 22 // want `mixing normal and naked returns not allowed`
 	}
+}
+
+func main() {
+	C.add()
 }
 
 func outer() {
