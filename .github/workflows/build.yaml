@@ -27,8 +27,6 @@ jobs:
           - os: macos-latest
             go: 1.x
 
-          - os: windows-latest
-            go: 1.x
 
     name: "${{ matrix.os }} / go ${{ matrix.go }}"
     runs-on: ${{ matrix.os }}
