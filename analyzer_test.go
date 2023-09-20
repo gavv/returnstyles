@@ -76,6 +76,16 @@ func TestAnalyzer(t *testing.T) {
 				ConfigFlag: filepath.Join(testdata, "src/yaml/config.yaml"),
 			},
 		},
+		{
+			name:    "generated_excluded",
+			options: nil,
+		},
+		{
+			name: "generated_included",
+			options: map[string]any{
+				IncludeGeneratedFlag: true,
+			},
+		},
 	}
 
 	for _, tt := range tests {
