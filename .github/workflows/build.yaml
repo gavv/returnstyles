@@ -2,8 +2,6 @@ name: build
 
 on:
   pull_request:
-    branches:
-      - main
 
   push:
     branches:
@@ -11,13 +9,18 @@ on:
     tags:
       - v*
 
+  workflow_dispatch:
+
+  schedule:
+    - cron: '0 0 * * 1'
+
 jobs:
   build:
     strategy:
       matrix:
         include:
           - os: ubuntu-latest
-            go: 1.18
+            go: 1.19
 
           - os: ubuntu-latest
             go: 1.x
@@ -30,10 +33,10 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Install Go
-        uses: actions/setup-go@v3
+        uses: actions/setup-go@v5
         with:
           go-version: ${{ matrix.go }}
 

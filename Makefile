@@ -8,8 +8,8 @@ build:
 	go build -o returnstyles ./cmd/returnstyles
 
 test:
-ifneq ($(shell which gotest),)
-	gotest -v .
-else
 	go test -v .
-endif
+
+clean:
+	rm -f returnstyles
+	go clean -cache -modcache
