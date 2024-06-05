@@ -14,15 +14,15 @@ func TestAnalyzer(t *testing.T) {
 	testdata := filepath.Join(workdir, "testdata")
 
 	tests := []struct {
-		name    string
+		testdir string
 		options map[string]any
 	}{
 		{
-			name:    "default",
+			testdir: "default",
 			options: nil,
 		},
 		{
-			name: "default",
+			testdir: "default",
 			options: map[string]any{
 				AllowUnnamedFlag:        true,
 				AllowNamedFlag:          true,
@@ -33,7 +33,7 @@ func TestAnalyzer(t *testing.T) {
 			},
 		},
 		{
-			name: "strict",
+			testdir: "strict",
 			options: map[string]any{
 				AllowUnnamedFlag:        true,
 				AllowNamedFlag:          true,
@@ -44,7 +44,7 @@ func TestAnalyzer(t *testing.T) {
 			},
 		},
 		{
-			name: "purism",
+			testdir: "purism",
 			options: map[string]any{
 				AllowUnnamedFlag:        true,
 				AllowNamedFlag:          true,
@@ -55,7 +55,7 @@ func TestAnalyzer(t *testing.T) {
 			},
 		},
 		{
-			name: "disable_named",
+			testdir: "disable_named",
 			options: map[string]any{
 				AllowUnnamedFlag:        true,
 				AllowNamedFlag:          false,
@@ -63,7 +63,7 @@ func TestAnalyzer(t *testing.T) {
 			},
 		},
 		{
-			name: "disable_unnamed",
+			testdir: "disable_unnamed",
 			options: map[string]any{
 				AllowUnnamedFlag:        false,
 				AllowNamedFlag:          true,
@@ -71,17 +71,17 @@ func TestAnalyzer(t *testing.T) {
 			},
 		},
 		{
-			name: "yaml",
+			testdir: "yaml",
 			options: map[string]any{
 				ConfigFlag: filepath.Join(testdata, "src/yaml/config.yaml"),
 			},
 		},
 		{
-			name:    "generated_excluded",
+			testdir: "generated_excluded",
 			options: nil,
 		},
 		{
-			name: "generated_included",
+			testdir: "generated_included",
 			options: map[string]any{
 				IncludeGeneratedFlag: true,
 			},
@@ -89,13 +89,13 @@ func TestAnalyzer(t *testing.T) {
 	}
 
 	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
+		t.Run(tt.testdir, func(t *testing.T) {
 			Analyzer.Flags = flags()
 			for k, v := range tt.options {
 				Analyzer.Flags.Set(k, fmt.Sprintf("%v", v))
 			}
 
-			analysistest.Run(t, testdata, Analyzer, tt.name)
+			analysistest.Run(t, testdata, Analyzer, tt.testdir)
 		})
 	}
 }
