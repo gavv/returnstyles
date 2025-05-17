@@ -130,9 +130,13 @@ func bar() (a int, b int) {
 }
 ```
 
+## History
+
+You can find changelog here: [changelog](CHANGES.md).
+
 ## Authors
 
-See [here](https://github.com/gavv/returnstyles/graphs/contributors).
+See [here](AUTHORS.md).
 
 ## License
 

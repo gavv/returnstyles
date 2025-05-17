@@ -14,3 +14,6 @@ test: build
 clean:
 	rm -f returnstyles
 	go clean -cache -modcache
+
+md:
+	md-authors -a -f modern AUTHORS.md
