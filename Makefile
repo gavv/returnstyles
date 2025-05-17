@@ -7,8 +7,9 @@ build:
 	go build .
 	go build -o returnstyles ./cmd/returnstyles
 
-test:
+test: build
 	go test -v .
+	./returnstyles -debug fpsv .
 
 clean:
 	rm -f returnstyles
